@@ -53,10 +53,12 @@ Here's a quick example:
 import pandas as pd
 from federleicht import cache_dataframe
 
+
 @cache_dataframe
 def generate_large_dataframe():
     # Simulate a heavy computation
     return pd.DataFrame({"col1": range(10000), "col2": range(10000)})
+
 
 df = generate_large_dataframe()
 ```
@@ -122,4 +124,4 @@ Results strongly depend on the system configuration and the file system. The fol
 | 1071093 |         5.383 |           5.465 |          0.366 |
 | 3445752 |        16.750 |          17.720 |          1.141 |
 
-![BenchmarkPlot ](examples/benchmark.webp)
+![BenchmarkPlot ](https://raw.githubusercontent.com/d-chris/federleicht/refs/heads/main/examples/benchmark.webp)
