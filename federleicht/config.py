@@ -1,6 +1,8 @@
 import importlib.metadata
 from collections import namedtuple
 
+__version__ = importlib.metadata.version(__package__)
+
 CacheConfig = namedtuple(
     "CacheConfig",
     [
@@ -13,7 +15,7 @@ CacheConfig = namedtuple(
 )
 
 CACHE = CacheConfig(
-    version=importlib.metadata.version(__package__),
+    version=__version__,
     dir=".pandas_cache",
     digest=16,
     expires="seconds",

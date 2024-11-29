@@ -31,6 +31,7 @@ def cachefile(cache):
 
     try:
         file = Path(CACHE.dir).joinpath(cache)
+        file.parent.mkdir(parents=True, exist_ok=True)
 
         yield file
 
@@ -92,3 +93,14 @@ def csvframe(dataframe: pd.DataFrame, tmp_path):
     dataframe.to_csv(csvfile, index=False)
 
     return (csvfile, dataframe)
+
+
+def pytest_sessionfinish(session, exitstatus):
+    """
+    Delete empty cache directory after tests.
+    """
+
+    try:
+        Path(CACHE.dir).delete(missing_ok=True, recursive=False)
+    except OSError:
+        pass

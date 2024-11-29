@@ -120,13 +120,11 @@ def test_arqs_unique_file(cachefile):
 
     with cachefile.open("w") as f:
         f.write("foo\n")
-        f.flush()
 
     foo = args.unique(cachefile)
 
     with cachefile.open("a") as f:
         f.write("bar\n")
-        f.flush()
 
     bar = args.unique(cachefile)
 

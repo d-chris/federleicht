@@ -9,7 +9,7 @@ description = "lightweigth function decorators to cache your `pandas.DataFrame` 
 authors = [ "Christoph Dörrer <d-chris@web.de>" ]
 readme = "README.md"
 license = "MIT"
-keywords = [ "cache", "feather", "pandas", "parquet", "pyarrow" ]
+keywords = [ "cache", "feather", "pandas", "pyarrow" ]
 classifiers = [
   "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
@@ -21,17 +21,21 @@ classifiers = [
 ]
 exclude = [ "examples", "tests" ]
 
+[tool.poetry.urls]
+Repository = "https://github.com/d-chris/federleicht"
+Documentation = "https://d-chris.github.io/federleicht"
+
 [tool.poetry.dependencies]
 python = "^3.9"
-pathlibutil = "^0.3.4"
-pandas = { extras = [ "pyarrow" ], version = "^2.2.3" }
+pathlibutil = ">=0.3.0"
+pandas = { extras = [ "feather" ], version = ">=2.0.0" }
 xxhash = { version = "^3.5.0", optional = true }
 
 [tool.poetry.extras]
 fasthash = [ "xxhash" ]
 
 [tool.poetry.group.test.dependencies]
-pytest = "^8.3.3"
+pytest = "^8.0.0"
 pytest-cov = "^6.0.0"
 pytest-mock = "^3.14.0"
 pytest-randomly = "^3.16.0"

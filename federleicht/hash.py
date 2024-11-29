@@ -2,17 +2,40 @@ import hashlib
 import types
 from typing import Any, Callable, Tuple
 
+import pandas as pd
+import pyarrow as pa
+
 import federleicht.args as args
 from federleicht.config import CACHE
 
+__salt__: bytes = None
 
-def salt():
-    """Generate a salt based on the package version.
+
+def salt() -> bytes:
+    """Generate a salt based on the main dependency versions.
 
     Returns:
         bytes: The first 8 characters of the package version encoded as bytes.
     """
-    return CACHE.version[:8].encode()
+
+    global __salt__
+
+    if __salt__ is None:
+
+        dependencies = {
+            "pandas": pd.__version__,
+            "pyarrow": pa.__version__,
+        }
+
+        versions = ";".join(f"{key}={value}" for key, value in dependencies.items())
+
+        __salt__ = hashlib.blake2s(
+            versions.encode(),
+            digest_size=8,
+            salt=CACHE.version.encode()[:8],
+        ).digest()
+
+    return __salt__
 
 
 def hash_wrapped(
