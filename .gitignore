@@ -1,7 +1,9 @@
+.venv/
 .vscode/
 .pandas_cache/
 *.feather
 .earthquake
+docs/public/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

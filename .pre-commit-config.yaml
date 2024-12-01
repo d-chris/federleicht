@@ -22,6 +22,7 @@ repos:
     rev: "1.19.1"
     hooks:
       - id: blacken-docs
+        exclude_types: ["markdown"]
   - repo: https://github.com/pycqa/isort
     rev: 5.13.2
     hooks:
@@ -49,3 +50,10 @@ repos:
     hooks:
       - id: pyupgrade
         exclude: "tests/"
+  - repo: local
+    hooks:
+      - id: readme
+        name: reandering readme
+        entry: poetry run python -m docs
+        language: system
+        files: ^docs/(benchmark\.md|README\.md\.jinja2)$

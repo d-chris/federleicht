@@ -1,0 +1,33 @@
+name: poetry-publish
+on:
+  release:
+    types: [released]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install poetry
+        run: pipx install poetry
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+      - name: Install dependencies
+        run: |
+          poetry install --only main,docs
+      - name: Create Documentation
+        run: |
+          poetry run python -m docs
+      - name: Upload GH Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/public
+      - name: Build and publish
+        env:
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          poetry version $(git describe --tags)
+          poetry build
+          poetry publish
