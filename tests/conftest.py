@@ -1,5 +1,4 @@
 import random
-import string
 
 import pandas as pd
 import pytest
@@ -13,14 +12,10 @@ def cache() -> str:
     """
     random generated cachefile name
     """
-    name = "".join(
-        random.choices(
-            string.hexdigits,
-            k=CACHE.digest,
-        )
-    )
+    bit = CACHE.digest * 8
+    integer = random.getrandbits(bit)
 
-    return name.lower()
+    return hex(integer)[2:]
 
 
 @pytest.fixture

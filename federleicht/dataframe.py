@@ -113,7 +113,9 @@ def cache_dataframe(
                 delete_cache(cache)
                 raise FileNotFoundError
 
-            df = pd.read_feather(cache)
+            with cache.open("rb", buffering=CACHE.buffer) as f:
+                df = pd.read_feather(f)
+
             df.attrs["from_cache"] = cache
 
             if cache_attrs is True:
@@ -123,7 +125,9 @@ def cache_dataframe(
             df: pd.DataFrame = func(*args, **kwargs)
 
             cache.parent.mkdir(parents=True, exist_ok=True)
-            df.to_feather(cache)
+
+            with cache.open("wb", buffering=CACHE.buffer) as f:
+                df.to_feather(f)
 
             if cache_attrs is True:
                 attrs.save(df, cache)

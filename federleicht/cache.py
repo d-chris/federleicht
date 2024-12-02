@@ -51,27 +51,25 @@ def clear_cache(cache_dir: str = CACHE.dir, **kwargs) -> int:
         >>> clear_cache(weeks=2)
         0
     """
+    cache_dir = Path(cache_dir)
+
+    if not cache_dir.is_dir():
+        return 0
 
     if not kwargs:
-        is_expired = lambda file: True  # noqa
+        is_expired = lambda _: True  # noqa
     else:
         is_expired = lambda file: file.is_expired(**kwargs)  # noqa
 
-    regex = re.compile(f"[a-f0-9]{{{CACHE.digest}}}", re.IGNORECASE)
+    regex = re.compile(f"[a-f0-9]{{{CACHE.digest * 2}}}", re.IGNORECASE)
 
     error = 0
-    files = (file for file in Path(cache_dir).iterdir() if file.is_file())
 
-    for file in files:
-        if not regex.fullmatch(file.name):
-            continue
-
-        if not is_expired(file):
-            continue
-
-        try:
-            delete_cache(file)
-        except Exception:
-            error += 1
+    for file in cache_dir.glob("*"):
+        if file.is_file() and regex.match(file.name) and is_expired(file):
+            try:
+                delete_cache(file)
+            except Exception:
+                error += 1
 
     return error

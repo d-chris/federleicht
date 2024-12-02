@@ -70,3 +70,8 @@ def test_clear_cache_different_file(tmp_path):
 
     assert cache.clear_cache(tmp_path) == 0
     assert file.is_file()
+
+
+def test_clear_cache_no_dir():
+
+    assert cache.clear_cache("nonexistent") == 0
